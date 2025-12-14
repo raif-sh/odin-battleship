@@ -1,0 +1,28 @@
+{
+  "name": "odin-battleship",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/raif-sh/odin-battleship#readme",
+  "bugs": {
+    "url": "https://github.com/raif-sh/odin-battleship/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raif-sh/odin-battleship.git"
+  },
+  "license": "ISC",
+  "author": "raif",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "jest": "^30.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.5",
+    "@babel/preset-env": "^7.28.5",
+    "babel-jest": "^30.2.0"
+  }
+}
