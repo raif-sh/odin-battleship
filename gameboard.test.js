@@ -33,3 +33,19 @@ it("No out of board placements", () => {
     expect(board.placeShip('Carrier', 8, 8, 'horizontal')).toEqual(false);
 
 })
+
+it("Receive an attack and check if already attacked", () => {
+    const board = new Gameboard();
+
+    expect(board.placeShip('Battleship', 0, 0, 'horizontal')).toEqual(true);
+    expect(board.receiveAttack(0,0)).toBe(true);
+    expect(board.receiveAttack(0,1)).toBe(true);
+    expect(board.receiveAttack(0,3)).toBe(true);
+    expect(board.receiveAttack(0,3)).toBe(false);
+})
+
+it("Attacked an empty square", () => {
+    const board = new Gameboard();
+    
+    expect(board.receiveAttack(0,0)).toBe(false);
+})

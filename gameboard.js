@@ -44,6 +44,24 @@ export class Gameboard {
 
         return true;
     }
+
+    // function accepts pair of coordinates
+    receiveAttack(row, col) {
+        // determine whether attack hit a ship aka null 
+        if(this.grid[row][col] === null) {
+            // record coordinates of missed shot
+            this.grid[row][col] = false;
+            return false;
+        } else if (this.grid[row][col] === false || this.grid[row][col] === true) {
+            // already attacked once
+            return false;
+        }
+        // assign hit to correct ship and record hit
+        const attackedShip = this.grid[row][col];
+        attackedShip.hit()
+        this.grid[row][col] = true;
+        return true;
+    }
     
     ship_types = [
         {
