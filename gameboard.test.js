@@ -1,4 +1,3 @@
-import { Ship } from './ship.js'
 import { Gameboard } from './gameboard.js'
 
 
@@ -6,6 +5,11 @@ it("create new empty board with 10 x 10 grid", () => {
     const BoardCreated = new Gameboard();
     expect(BoardCreated.grid.length).toBe(10);
     expect(BoardCreated.grid[0].length).toBe(10);
+})
+
+it("Ship type input should be a valid ship name", () => {
+    const board = new Gameboard();
+    expect(board.placeShip('Wrong Name', 1, 1, 'horizontal')).toEqual(false);
 })
 
 it("place ships at specific coordinates on both orientations", () => {

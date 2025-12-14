@@ -1,8 +1,8 @@
 import { Ship } from "./ship.js";
 
-const shipOfOne = new Ship(1)
-const shipOfThree = new Ship(3)
-const shipOfFive = new Ship(5)
+const shipOfOne = new Ship("Patrol Boat", 1)
+const shipOfThree = new Ship("Submarine", 3)
+const shipOfFive = new Ship("Carrier", 5)
 
 it("ship hit registers damage and sinks and takes no more damage", () => {
     expect(shipOfOne.hit()).toBe(true);

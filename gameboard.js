@@ -1,3 +1,5 @@
+import { Ship } from './ship.js'
+
 export class Gameboard {
     constructor() {
         this.grid = [];
@@ -7,37 +9,40 @@ export class Gameboard {
     }
 
     placeShip(type, startRow, startColumn, orientation) {
-        const shipToPlace = this.ship_types.find(ship => ship.name === type);
+        const shipInfo = this.ship_types.find(ship => ship.name === type);
+        if (shipInfo === undefined) {
+            return false;
+        }
+        const shipInstance = new Ship(type, shipInfo["length"]);
         
         if (orientation === 'horizontal') {
             // Check for out of board
-            if ((startColumn + shipToPlace["length"]) > 10) {
+            if ((startColumn + shipInfo["length"]) > 10) {
                 return false;
             }
-            for (let i = 0; i < shipToPlace["length"]; i++) {
+            for (let i = 0; i < shipInfo["length"]; i++) {
                 // Check for overlap
                 if(this.grid[startRow][startColumn + i] !== null) {
                     return false;
                 }
 
-
-                this.grid[startRow][startColumn + i] = shipToPlace["id"]
+                this.grid[startRow][startColumn + i] = shipInstance;
             }
             return true;
         } else if (orientation === 'vertical') {
-            if ((startRow + shipToPlace["length"]) > 10) {
+            if ((startRow + shipInfo["length"]) > 10) {
                 return false;
             }
-            for (let i = 0; i < shipToPlace["length"]; i++) {
+            for (let i = 0; i < shipInfo["length"]; i++) {
                 if(this.grid[startRow + i][startColumn] !== null) {
                     return false;
                 } 
-                this.grid[startRow + i][startColumn] = shipToPlace["id"]
+                this.grid[startRow + i][startColumn] = shipInstance;
             }
             return true;
         }
 
-        return shipToPlace["name"];
+        return true;
     }
     
     ship_types = [
