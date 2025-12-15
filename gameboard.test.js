@@ -53,3 +53,20 @@ it("No out of board attacks", () => {
     expect(board.receiveAttack(10, 10)).toEqual(false);
     expect(board.receiveAttack(-1, 0)).toEqual(false);
 })
+
+it("All ships are sunk", () => {
+    const board = new Gameboard();
+    expect(board.placeShip('Patrol Boat', 0, 0, 'horizontal')).toEqual(true);    
+    expect(board.receiveAttack(0, 0)).toEqual(true);
+    expect(board.receiveAttack(0, 1)).toEqual(true);
+    expect(board.checkSunkStatus()).toEqual(true);
+})
+
+it("Not all ships have been sunk", () => {
+    const board = new Gameboard();
+    expect(board.placeShip('Submarine', 3, 1, 'horizontal')).toEqual(true);
+    expect(board.placeShip('Patrol Boat', 0, 0, 'horizontal')).toEqual(true);
+    expect(board.receiveAttack(0, 0)).toEqual(true);
+    expect(board.receiveAttack(0, 1)).toEqual(true);
+    expect(board.checkSunkStatus()).toEqual(false);
+})

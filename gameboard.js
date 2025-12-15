@@ -67,6 +67,24 @@ export class Gameboard {
         const attackedShip = this.grid[row][col];
         attackedShip.hit()
         this.hits[row][col] = true;
+        // check if ship has damage to sink
+        if(attackedShip.length === attackedShip.hits_taken) {
+            attackedShip.sunk = true;
+            this.checkSunkStatus()
+        }
+        return true;
+    }
+
+    checkSunkStatus(){
+        for(let row = 0; row < 10; row++) {
+            for (let col = 0; col < 10; col++) {
+                if (this.grid[row][col] && this.grid[row][col].sunk === false) {
+                    // found a ship that is not sunk
+                    return false; 
+                }
+            }
+        }
+        // all ships are sunk
         return true;
     }
     
