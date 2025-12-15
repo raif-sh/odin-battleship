@@ -1,0 +1,37 @@
+body {
+    background-color: #333;
+    color: rgb(226, 236, 239);
+}
+
+/* Game container */
+#game {
+    display: flex;
+    gap: 40px;
+    padding: 20px;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* Game Board containers */
+#boardOne, #boardTwo {
+    display: grid;
+    grid-template-columns: repeat(10, 40px);
+    grid-template-rows: repeat(10, 40px);
+    gap: 1px;
+    background-color: #0e1c77;
+    padding: 10px;
+}
+
+/* Individual cells */
+#boardOne div, #boardTwo div {
+    width: 40px;
+    height: 40px;
+    background-color: #2538b5;
+    border: 1px solid rgb(58, 82, 236);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
