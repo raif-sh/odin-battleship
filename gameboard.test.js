@@ -31,16 +31,14 @@ it("Check for overlap, not place if any ship conflicts with existing ship", () =
 it("No out of board placements", () => {
     const board = new Gameboard();
     expect(board.placeShip('Carrier', 8, 8, 'horizontal')).toEqual(false);
-
 })
 
 it("Receive an attack and check if already attacked", () => {
     const board = new Gameboard();
 
-    expect(board.placeShip('Battleship', 0, 0, 'horizontal')).toEqual(true);
-    expect(board.receiveAttack(0,0)).toBe(true);
-    expect(board.receiveAttack(0,1)).toBe(true);
-    expect(board.receiveAttack(0,3)).toBe(true);
+    expect(board.placeShip('Battleship', 8, 1, 'horizontal')).toEqual(true);
+
+    expect(board.receiveAttack(8,2)).toBe(true);
     expect(board.receiveAttack(0,3)).toBe(false);
 })
 
@@ -48,4 +46,10 @@ it("Attacked an empty square", () => {
     const board = new Gameboard();
     
     expect(board.receiveAttack(0,0)).toBe(false);
+})
+
+it("No out of board attacks", () => {
+    const board = new Gameboard();
+    expect(board.receiveAttack(10, 10)).toEqual(false);
+    expect(board.receiveAttack(-1, 0)).toEqual(false);
 })

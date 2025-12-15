@@ -3,8 +3,10 @@ import { Ship } from './ship.js'
 export class Gameboard {
     constructor() {
         this.grid = [];
+        this.hits = [];
         for (let i = 0; i < 10; i++) {
             this.grid.push(Array(10).fill(null));
+            this.hits.push(Array(10).fill(null));
         }
     }
 
@@ -26,6 +28,7 @@ export class Gameboard {
                     return false;
                 }
 
+                // register ship location
                 this.grid[startRow][startColumn + i] = shipInstance;
             }
             return true;
@@ -47,19 +50,23 @@ export class Gameboard {
 
     // function accepts pair of coordinates
     receiveAttack(row, col) {
-        // determine whether attack hit a ship aka null 
-        if(this.grid[row][col] === null) {
-            // record coordinates of missed shot
-            this.grid[row][col] = false;
+        // validate for out of board attacks
+        if (row < 0 || row > 9 || col < 0 || col > 9) {
             return false;
-        } else if (this.grid[row][col] === false || this.grid[row][col] === true) {
+        }
+        // determine whether attack hit a ship aka null 
+        else if(this.grid[row][col] === null) {
+            // record coordinates of missed shot, hits is false
+            this.hits[row][col] = false;
+            return false;
+        } else if (this.hits[row][col] === false || this.hits[row][col] === true) {
             // already attacked once
             return false;
         }
         // assign hit to correct ship and record hit
         const attackedShip = this.grid[row][col];
         attackedShip.hit()
-        this.grid[row][col] = true;
+        this.hits[row][col] = true;
         return true;
     }
     
