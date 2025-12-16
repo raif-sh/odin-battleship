@@ -24,6 +24,7 @@ body {
 
 /* Individual cells */
 #boardOne div, #boardTwo div {
+    /* content-visibility: hidden; */
     width: 40px;
     height: 40px;
     background-color: #2538b5;
@@ -34,4 +35,34 @@ body {
     font-size: 12px;
     font-weight: bold;
     cursor: pointer;
+}
+
+#boardOne div:hover, #boardTwo div:hover {
+    background-color: #3f54dc;
+}
+
+#boardOne div.hit, #boardTwo div.hit {
+    background-color: #e74c3c;
+}
+
+#boardOne div.miss, #boardTwo div.miss {
+    background-color: #2d2364;
+}
+
+#boardOne div.ship, #boardTwo div.ship {
+    background-color: #dcc024;
+}
+
+#boardOne div.sunk, #boardTwo div.sunk {
+    background-color: #25b378;
+}
+
+/* Player Title Labels */
+
+.boardTitle {
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
 }
