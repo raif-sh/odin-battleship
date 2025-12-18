@@ -13,12 +13,34 @@ const winnerModal = document.querySelector("#winnerModal");
 const winnerMessage = document.querySelector("#winnerMessage");
 const restartBtn = document.querySelector("#restartBtn");
 
+// Ship placement elements
+const shipPlacement = document.querySelector("#shipPlacement");
+const placementTitle = document.querySelector("#placementTitle");
+const currentShipName = document.querySelector("#currentShipName");
+const currentShipLength = document.querySelector("#currentShipLength");
+const rotateBtn = document.querySelector("#rotateBtn");
+const randomPlaceBtn = document.querySelector("#randomPlaceBtn");
+const startGameBtn = document.querySelector("#startGameBtn");
+const placementGrid = document.querySelector("#placementGrid");
+
 let playerOne, playerTwo = null;
 
 // Game type
 let pvpGame = false;
 let pvcGame = false;
 let gameOver = false;
+
+// Ship placement state
+let currentShipIndex = 0;
+let currentOrientation = 'horizontal';
+let currentPlacingPlayer = null;
+let shipsToPlace = [
+    { name: "Carrier", length: 5 },
+    { name: "Battleship", length: 4 },
+    { name: "Destroyer", length: 3 },
+    { name: "Submarine", length: 3 },
+    { name: "Patrol Boat", length: 2 }
+];
 
 // Valid Ship names ==>
 // Carrier
@@ -31,58 +53,20 @@ getStartPvpBtn.addEventListener('click', () => {
     // create pvp players
     playerOne = new Player('human', 1);
     playerTwo = new Player('human', 2);
-    console.log(playerTwo)
-
-    // TEMP - Placing ships manually for player one
-    playerOne.gameBoard.placeShip("Carrier",0,0,"horizontal");
-    playerOne.gameBoard.placeShip("Battleship",1,0,"vertical");
-    playerOne.gameBoard.placeShip("Destroyer",1,1,"vertical");
-    playerOne.gameBoard.placeShip("Submarine",2,2,"horizontal");
-    playerOne.gameBoard.placeShip("Patrol Boat",0,9,"vertical");
-    // TEMP - Placing ships manually for player two
-    playerTwo.gameBoard.placeShip("Carrier",0,0,"horizontal");
-    playerTwo.gameBoard.placeShip("Battleship",1,0,"vertical");
-    playerTwo.gameBoard.placeShip("Destroyer",1,1,"vertical");
-    playerTwo.gameBoard.placeShip("Submarine",2,2,"horizontal");
-    playerTwo.gameBoard.placeShip("Patrol Boat",0,9,"vertical");
-    // Creating board for two players
-    renderBoard(boardOne, playerOne);
-    renderBoard(boardTwo, playerTwo);
-
-    // Change screen
-    startScreen.style.display = "none";
-    gui.style.display = "flex";
     pvpGame = true;
-    manageTurn()
+
+    // Start ship placement for player one
+    startShipPlacement(playerOne, "Player One: Place Your Ships");
 })
 
 getStartComputerBtn.addEventListener('click', () => {
     // create pvc players
     playerOne = new Player('human', 1);
     playerTwo = new Player('computer', 2);
-    console.log(playerTwo)
-
-    // TEMP - Placing ships manually for player one
-    playerOne.gameBoard.placeShip("Carrier",0,0,"horizontal");
-    playerOne.gameBoard.placeShip("Battleship",1,0,"vertical");
-    playerOne.gameBoard.placeShip("Destroyer",1,1,"vertical");
-    playerOne.gameBoard.placeShip("Submarine",2,2,"horizontal");
-    playerOne.gameBoard.placeShip("Patrol Boat",0,9,"vertical");
-    // TEMP - Placing ships manually for player two
-    playerTwo.gameBoard.placeShip("Carrier",0,0,"horizontal");
-    playerTwo.gameBoard.placeShip("Battleship",1,0,"vertical");
-    playerTwo.gameBoard.placeShip("Destroyer",1,1,"vertical");
-    playerTwo.gameBoard.placeShip("Submarine",2,2,"horizontal");
-    playerTwo.gameBoard.placeShip("Patrol Boat",0,9,"vertical");
-    // Creating board for two players
-    renderBoard(boardOne, playerOne);
-    renderBoard(boardTwo, playerTwo);
-
-    // Change screen
-    startScreen.style.display = "none";
-    gui.style.display = "flex";
     pvcGame = true;
-    manageTurn()
+
+    // Start ship placement for player one (computer ships will be placed automatically)
+    startShipPlacement(playerOne, "Place Your Ships");
 })
 
 // function to render boards on html
@@ -138,6 +122,270 @@ function manageTurn() {
     }
     // switch players turn
     playerTurn === 1 ? playerTurn = 2 : playerTurn = 1;
+}
+
+// ========== SHIP PLACEMENT FUNCTIONS ==========
+
+function startShipPlacement(player, title) {
+    currentPlacingPlayer = player;
+    currentShipIndex = 0;
+    currentOrientation = 'horizontal';
+
+    // Update UI
+    placementTitle.textContent = title;
+    startScreen.style.display = "none";
+    shipPlacement.style.display = "flex";
+
+    // Render placement grid
+    renderPlacementGrid();
+
+    // Update current ship info
+    updateCurrentShipInfo();
+
+    // Setup event listeners
+    setupPlacementListeners();
+}
+
+function renderPlacementGrid() {
+    placementGrid.innerHTML = "";
+
+    for (let row = 0; row < 10; row++) {
+        for (let col = 0; col < 10; col++) {
+            const cell = document.createElement("div");
+            cell.dataset.row = row;
+            cell.dataset.col = col;
+            placementGrid.appendChild(cell);
+        }
+    }
+}
+
+function updateCurrentShipInfo() {
+    if (currentShipIndex < shipsToPlace.length) {
+        const currentShip = shipsToPlace[currentShipIndex];
+        currentShipName.textContent = currentShip.name;
+        currentShipLength.textContent = currentShip.length;
+        startGameBtn.style.display = "none";
+    } else {
+        currentShipName.textContent = "All ships placed!";
+        currentShipLength.textContent = "";
+        startGameBtn.style.display = "block";
+    }
+}
+
+function setupPlacementListeners() {
+    placementGrid.addEventListener('mouseover', handlePlacementHover);
+    placementGrid.addEventListener('mouseout', handlePlacementOut);
+    placementGrid.addEventListener('click', handlePlacementClick);
+    rotateBtn.addEventListener('click', handleRotate);
+    randomPlaceBtn.addEventListener('click', handleRandomPlacement);
+    startGameBtn.addEventListener('click', startGameAfterPlacement);
+}
+
+function removePlacementListeners() {
+    placementGrid.removeEventListener('mouseover', handlePlacementHover);
+    placementGrid.removeEventListener('mouseout', handlePlacementOut);
+    placementGrid.removeEventListener('click', handlePlacementClick);
+    rotateBtn.removeEventListener('click', handleRotate);
+    randomPlaceBtn.removeEventListener('click', handleRandomPlacement);
+    startGameBtn.removeEventListener('click', startGameAfterPlacement);
+}
+
+function handlePlacementHover(e) {
+    if (currentShipIndex >= shipsToPlace.length) return;
+
+    const cell = e.target;
+    const row = parseInt(cell.dataset.row);
+    const col = parseInt(cell.dataset.col);
+    const currentShip = shipsToPlace[currentShipIndex];
+
+    previewShipPlacement(row, col, currentShip.length, currentOrientation);
+}
+
+function handlePlacementOut() {
+    clearShipPreview();
+}
+
+function previewShipPlacement(row, col, length, orientation) {
+    clearShipPreview();
+
+    const cells = [];
+    if (orientation === 'horizontal') {
+        for (let i = 0; i < length; i++) {
+            if (col + i < 10) {
+                const cell = placementGrid.querySelector(`[data-row="${row}"][data-col="${col + i}"]`);
+                if (cell) cells.push(cell);
+            }
+        }
+    } else {
+        for (let i = 0; i < length; i++) {
+            if (row + i < 10) {
+                const cell = placementGrid.querySelector(`[data-row="${row + i}"][data-col="${col}"]`);
+                if (cell) cells.push(cell);
+            }
+        }
+    }
+
+    if (cells.length === length && canPlaceShip(row, col, length, orientation)) {
+        cells.forEach(cell => cell.classList.add('ship-preview'));
+    } else {
+        cells.forEach(cell => cell.classList.add('invalid-placement'));
+    }
+}
+
+function clearShipPreview() {
+    placementGrid.querySelectorAll('.ship-preview, .invalid-placement').forEach(cell => {
+        cell.classList.remove('ship-preview', 'invalid-placement');
+    });
+}
+
+function canPlaceShip(row, col, length, orientation) {
+    if (orientation === 'horizontal') {
+        if (col + length > 10) return false;
+        for (let i = 0; i < length; i++) {
+            if (currentPlacingPlayer.gameBoard.grid[row][col + i] !== null) return false;
+        }
+    } else {
+        if (row + length > 10) return false;
+        for (let i = 0; i < length; i++) {
+            if (currentPlacingPlayer.gameBoard.grid[row + i][col] !== null) return false;
+        }
+    }
+    return true;
+}
+
+function handlePlacementClick(e) {
+    if (currentShipIndex >= shipsToPlace.length) return;
+
+    const cell = e.target;
+    const row = parseInt(cell.dataset.row);
+    const col = parseInt(cell.dataset.col);
+    const currentShip = shipsToPlace[currentShipIndex];
+
+    if (canPlaceShip(row, col, currentShip.length, currentOrientation)) {
+        placeShipOnBoard(row, col, currentShip.name, currentShip.length, currentOrientation);
+        currentShipIndex++;
+        updateCurrentShipInfo();
+        clearShipPreview();
+        updatePlacedShipsDisplay();
+    }
+}
+
+function placeShipOnBoard(row, col, shipName, length, orientation) {
+    currentPlacingPlayer.gameBoard.placeShip(shipName, row, col, orientation);
+}
+
+function updatePlacedShipsDisplay() {
+    // Clear previous ship displays
+    placementGrid.querySelectorAll('.ship-placed').forEach(cell => {
+        cell.classList.remove('ship-placed');
+    });
+
+    // Show all placed ships
+    for (let row = 0; row < 10; row++) {
+        for (let col = 0; col < 10; col++) {
+            if (currentPlacingPlayer.gameBoard.grid[row][col] !== null) {
+                const cell = placementGrid.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+                if (cell) {
+                    cell.classList.add('ship-placed');
+                }
+            }
+        }
+    }
+}
+
+function handleRotate() {
+    currentOrientation = currentOrientation === 'horizontal' ? 'vertical' : 'horizontal';
+}
+
+function handleRandomPlacement() {
+    // Clear existing ships
+    for (let i = 0; i < 10; i++) {
+        for (let j = 0; j < 10; j++) {
+            currentPlacingPlayer.gameBoard.grid[i][j] = null;
+        }
+    }
+
+    // Place all ships randomly
+    for (let ship of shipsToPlace) {
+        let placed = false;
+        let attempts = 0;
+
+        while (!placed && attempts < 100) {
+            const row = Math.floor(Math.random() * 10);
+            const col = Math.floor(Math.random() * 10);
+            const orientation = Math.random() > 0.5 ? 'horizontal' : 'vertical';
+
+            if (canPlaceShip(row, col, ship.length, orientation)) {
+                placeShipOnBoard(row, col, ship.name, ship.length, orientation);
+                placed = true;
+            }
+            attempts++;
+        }
+    }
+
+    currentShipIndex = shipsToPlace.length;
+    updateCurrentShipInfo();
+    updatePlacedShipsDisplay();
+}
+
+function startGameAfterPlacement() {
+    removePlacementListeners();
+    shipPlacement.style.display = "none";
+
+    if (pvcGame && currentPlacingPlayer === playerOne) {
+        // Place computer ships randomly
+        currentPlacingPlayer = playerTwo;
+        for (let ship of shipsToPlace) {
+            let placed = false;
+            let attempts = 0;
+
+            while (!placed && attempts < 100) {
+                const row = Math.floor(Math.random() * 10);
+                const col = Math.floor(Math.random() * 10);
+                const orientation = Math.random() > 0.5 ? 'horizontal' : 'vertical';
+
+                if (canPlaceComputerShip(row, col, ship.length, orientation)) {
+                    playerTwo.gameBoard.placeShip(ship.name, row, col, orientation);
+                    placed = true;
+                }
+                attempts++;
+            }
+        }
+    } else if (pvpGame && currentPlacingPlayer === playerOne) {
+        // Start placement for player two
+        startShipPlacement(playerTwo, "Player Two: Place Your Ships");
+        return;
+    }
+
+    // Both players have placed ships, start the game
+    startBattle();
+}
+
+function canPlaceComputerShip(row, col, length, orientation) {
+    if (orientation === 'horizontal') {
+        if (col + length > 10) return false;
+        for (let i = 0; i < length; i++) {
+            if (playerTwo.gameBoard.grid[row][col + i] !== null) return false;
+        }
+    } else {
+        if (row + length > 10) return false;
+        for (let i = 0; i < length; i++) {
+            if (playerTwo.gameBoard.grid[row + i][col] !== null) return false;
+        }
+    }
+    return true;
+}
+
+function startBattle() {
+    // Create boards for both players
+    renderBoard(boardOne, playerOne);
+    renderBoard(boardTwo, playerTwo);
+
+    // Show game screen
+    gui.style.display = "flex";
+
+    // Start first turn
+    manageTurn();
 }
 
 function handlePlayerAttack(e) {
@@ -285,6 +533,11 @@ function restartGame() {
     playerTurn = 1;
     playerOne = null;
     playerTwo = null;
+
+    // Reset ship placement state
+    currentShipIndex = 0;
+    currentOrientation = 'horizontal';
+    currentPlacingPlayer = null;
 
     // Clear boards
     boardOne.innerHTML = "";

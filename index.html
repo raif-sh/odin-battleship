@@ -15,6 +15,23 @@
             <button id="startComputerBtn">Play against computer</button>
         </div>
     </div>
+
+    <div id="shipPlacement" style="display: none;">
+        <h2 id="placementTitle">Place Your Ships</h2>
+        <div id="placementInfo">
+            <p id="currentShipInfo">Current Ship: <span id="currentShipName"></span> (Length: <span id="currentShipLength"></span>)</p>
+            <div id="placementControls">
+                <button id="rotateBtn">Rotate Ship</button>
+                <button id="randomPlaceBtn">Random Placement</button>
+            </div>
+        </div>
+        <div id="placementBoard">
+            <h3>Your Board</h3>
+            <div id="placementGrid"></div>
+        </div>
+        <button id="startGameBtn" style="display: none;">Start Game</button>
+    </div>
+
     <div id="game" style="display: none;">
         <div id="winnerModal" style="display: none;">
             <div id="winnerContent">
