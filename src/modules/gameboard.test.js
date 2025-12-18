@@ -1,4 +1,4 @@
-import { Gameboard } from './gameboard.js'
+import { Gameboard } from "./gameboard"
 
 
 it("create new empty board with 10 x 10 grid", () => {

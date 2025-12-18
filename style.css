@@ -66,3 +66,142 @@ body {
     font-size: 18px;
     font-weight: bold;
 }
+
+/* Winner Modal Styles */
+#winnerModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#winnerContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#winnerMessage {
+    font-size: 48px;
+    font-weight: bold;
+    color: #f39c12;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#restartBtn {
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: #2538b5;
+    color: rgb(226, 236, 239);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#restartBtn:hover {
+    background-color: #3f54dc;
+}
+
+/* Ship Placement Styles */
+#shipPlacement {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #333;
+    color: rgb(226, 236, 239);
+}
+
+#placementTitle {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #f39c12;
+}
+
+#placementInfo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#currentShipInfo {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+#placementControls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#rotateBtn, #randomPlaceBtn, #startGameBtn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #2538b5;
+    color: rgb(226, 236, 239);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#rotateBtn:hover, #randomPlaceBtn:hover, #startGameBtn:hover {
+    background-color: #3f54dc;
+}
+
+#placementBoard {
+    text-align: center;
+}
+
+#placementGrid {
+    display: grid;
+    grid-template-columns: repeat(10, 40px);
+    grid-template-rows: repeat(10, 40px);
+    gap: 1px;
+    background-color: #0e1c77;
+    padding: 10px;
+    margin: 10px auto;
+}
+
+#placementGrid div {
+    width: 40px;
+    height: 40px;
+    background-color: #2538b5;
+    border: 1px solid rgb(58, 82, 236);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#placementGrid div:hover {
+    background-color: #3f54dc;
+}
+
+#placementGrid div.ship-preview {
+    background-color: #f39c12;
+    opacity: 0.7;
+}
+
+#placementGrid div.ship-placed {
+    background-color: #dcc024;
+    cursor: default;
+}
+
+#placementGrid div.invalid-placement {
+    background-color: #e74c3c;
+    opacity: 0.7;
+}
