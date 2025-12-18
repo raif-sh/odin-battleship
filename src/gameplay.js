@@ -293,7 +293,7 @@ function restartGame() {
     // Hide game UI, show start screen
     winnerModal.style.display = "none";
     game.style.display = "none";
-    startScreen.style.display = "flex";
+    startScreen.style.display = "block";
 }
 
 // Add restart button event listener
