@@ -1,8 +1,6 @@
 # Battleship
 
-A fully-featured implementation of the classic Battleship board game, built with vanilla JavaScript as part of [The Odin Project](https://www.theodinproject.com/) curriculum. This project demonstrates clean architecture, **test-driven development**, and modern web development practices without relying on frameworks.
-
-![Game Preview](docs/screenshot.png) *[Add a screenshot of your game]*
+An implementation of the classic Battleship board game, built with vanilla JavaScript as part of [The Odin Project](https://www.theodinproject.com/) curriculum. This project demonstrates clean architecture, comprehensive testing, and modern web development practices without relying on frameworks.
 
 ## Features
 
@@ -12,40 +10,13 @@ A fully-featured implementation of the classic Battleship board game, built with
 - **Modern UI**: Dark theme with ocean-inspired colors and smooth animations
 - **Responsive Design**: Works on desktop and mobile browsers
 
-## Test-Driven Development
-
-This project was built using **Test-Driven Development (TDD)** methodology. All core game logic was developed by writing tests first, then implementing functionality to make those tests pass.
-
-### Testing Approach
-- **26 unit tests** covering all core game logic (Ship, Gameboard, Player)
-- **100% test coverage** of business logic - no untested code paths
-- Tests run on every change using Jest's watch mode
-- Edge cases validated: boundary checks, overlap detection, duplicate attack prevention, sunk ship tracking
-
-### Running Tests
-```bash
-# Run all tests once
-npm test
-
-# Run tests in watch mode (recommended during development)
-npm test -- --watch
-```
-
-### Why TDD?
-- Catches bugs early before they reach the UI
-- Serves as living documentation of how the code works
-- Makes refactoring safer - tests catch regressions immediately
-- Encourages modular, testable code design
-
 ## Tech Stack
 
-| Area | Technology |
-|------|------------|
-| **Language** | JavaScript (ES6+ modules, classes) |
-| **Testing** | Jest (26 tests, 100% coverage of core logic) |
-| **Build** | Babel for ES6 module transpilation |
-| **Styling** | Pure CSS3 with Grid layout |
-| **Runtime** | Vanilla JavaScript - no frameworks
+- **JavaScript**: ES6+ with modules, classes, and modern syntax
+- **Testing**: Jest with 100% coverage of core game logic
+- **Build Tools**: Babel for ES6 module transpilation
+- **Styling**: Pure CSS3 with Grid layout and CSS transitions
+- **No Frameworks**: Built entirely with vanilla JavaScript
 
 ## Architecture
 
@@ -134,18 +105,16 @@ odin-battleship/
 └── babel.config.js         # Babel configuration
 ```
 
-*Note: Test files are co-located with implementation files - a TDD best practice that keeps tests close to the code they verify.*
-
 ## What I Learned
 
 Building this project strengthened my understanding of:
 
-- **Test-Driven Development**: Writing failing tests first, then implementing features - this radically changed how I approach problem-solving and led to more modular, testable code
-- **Object-Oriented Design**: Creating clean, modular classes with single responsibilities that are easy to test and maintain
-- **State Management**: Managing complex game state without external libraries using a dual-grid system
-- **DOM Manipulation**: Efficient event handling using delegation and dynamic listener management
-- **CSS Grid**: Building responsive, game-board layouts without frameworks
-- **Module Systems**: Organizing code with ES6 modules for better separation of concerns
+- **Object-Oriented Design**: Creating clean, modular classes with single responsibilities
+- **State Management**: Managing complex game state without external libraries
+- **Test-Driven Development**: Writing comprehensive unit tests before implementation
+- **DOM Manipulation**: Efficient event handling and dynamic UI updates
+- **CSS Grid**: Building responsive layouts without frameworks
+- **Module Systems**: Organizing code with ES6 modules
 
 ## Future Enhancements
 
